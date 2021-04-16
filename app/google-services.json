@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "230375442023",
+    "project_id": "nekome-ct",
+    "storage_bucket": "nekome-ct.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:230375442023:android:8a27896d8b781ef5a1f6c2",
+        "android_client_info": {
+          "package_name": "com.carlosmesquita.technicaltest.n26.bitlue"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "230375442023-ro0b64d2l6ui6vvb1mg920t98id086et.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDO6qJdd3nh9R3WdMyj4lcghQH58LV8F0Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "230375442023-ro0b64d2l6ui6vvb1mg920t98id086et.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
