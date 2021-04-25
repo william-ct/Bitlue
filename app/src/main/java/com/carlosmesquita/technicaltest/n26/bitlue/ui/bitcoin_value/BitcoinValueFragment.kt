@@ -10,9 +10,13 @@ import androidx.navigation.fragment.findNavController
 import com.carlosmesquita.technicaltest.n26.bitlue.BuildConfig
 import com.carlosmesquita.technicaltest.n26.bitlue.R
 import com.carlosmesquita.technicaltest.n26.bitlue.databinding.FragmentBitcoinValueBinding
+import com.carlosmesquita.technicaltest.n26.bitlue.ui.MainActivity
 import com.carlosmesquita.technicaltest.n26.bitlue.ui.MainViewModel
 import com.carlosmesquita.technicaltest.n26.bitlue.ui.actions.MainEvents.BitcoinValueEvents
 import com.carlosmesquita.technicaltest.n26.bitlue.ui.actions.MainStates.BitcoinValueStates
+import com.clevertap.android.sdk.CTInboxListener
+import com.clevertap.android.sdk.CTInboxStyleConfig
+import com.clevertap.android.sdk.CleverTapAPI
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -24,7 +28,7 @@ import timber.log.Timber
 @InternalCoroutinesApi
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
-class BitcoinValueFragment : Fragment(R.layout.fragment_bitcoin_value) {
+class BitcoinValueFragment : Fragment(R.layout.fragment_bitcoin_value), CTInboxListener {
 
     private val viewModel: MainViewModel by activityViewModels()
 
@@ -42,8 +46,12 @@ class BitcoinValueFragment : Fragment(R.layout.fragment_bitcoin_value) {
 
         collectUIStates()
 
-        viewModel.errorMessage.observe(viewLifecycleOwner) {
-            showErrorDialog(it ?: return@observe)
+        val inboxUnreadCount = (activity as? MainActivity)?.clevertapDefaultInstance?.inboxMessageUnreadCount
+        if (inboxUnreadCount != null) {
+            if (inboxUnreadCount >= 0)
+               binding.appInboxUnreadCountIndicator.visibility = View.VISIBLE
+            else
+                binding.appInboxUnreadCountIndicator.visibility = View.GONE
         }
 
         viewModel.bitcoinValues.observe(viewLifecycleOwner) {
@@ -56,6 +64,18 @@ class BitcoinValueFragment : Fragment(R.layout.fragment_bitcoin_value) {
 
         binding.fab.setOnClickListener {
             sendEvent(BitcoinValueEvents.OnFabClicked)
+        }
+
+        binding.appInbox.setOnClickListener {
+            initAppInbox((activity as? MainActivity)?.clevertapDefaultInstance)
+        }
+    }
+
+    private fun initAppInbox(cleverTapInstance: CleverTapAPI?) {
+        cleverTapInstance.apply {
+          this!!.ctNotificationInboxListener = this@BitcoinValueFragment
+          //Initialize the inbox and wait for callbacks on overridden methods
+          initializeInbox()
         }
     }
 
@@ -115,5 +135,28 @@ class BitcoinValueFragment : Fragment(R.layout.fragment_bitcoin_value) {
             .setMessage(getString(R.string.message_unexpected_error, detailsMessage))
             .setPositiveButton(R.string.action_ok, null)
             .show()
+    }
+
+    override fun inboxDidInitialize() {
+        Timber.i("inboxDidInitialize() called")
+
+        val tabs = ArrayList<String>()
+        tabs.add("Promotions")
+        val styleConfig = CTInboxStyleConfig()
+        styleConfig.tabs = tabs//Do not use this if you don't want to use tabs
+        styleConfig.tabBackgroundColor = "#6f3a4b"//provide Hex code in string ONLY
+        styleConfig.selectedTabIndicatorColor = "#ffffff"
+        styleConfig.selectedTabColor = "#ffffff"
+        styleConfig.unselectedTabColor = "#ea9aae"
+        styleConfig.backButtonColor = "#121212"
+        styleConfig.navBarTitleColor = "#121212"
+        styleConfig.navBarTitle = "My Inbox"
+        styleConfig.navBarColor = "#ffffff"
+        styleConfig.inboxBackgroundColor = "#C8C8C8"
+        (activity as? MainActivity)?.clevertapDefaultInstance?.showAppInbox(styleConfig)
+    }
+
+    override fun inboxMessagesDidUpdate() {
+        Timber.i("inboxMessagesDidUpdate() called")
     }
 }
