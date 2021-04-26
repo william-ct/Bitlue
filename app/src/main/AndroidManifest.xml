@@ -3,9 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.carlosmesquita.technicaltest.n26.bitlue">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <!-- Recommended so that CleverTap knows when to attempt a network call -->
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- Recommended so that CleverTap knows when to attempt a network call -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:name=".BitlueApplication"
@@ -16,7 +15,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Bitlue"
         tools:ignore="AllowBackup">
+        <activity android:name=".ui.bitcoin_value.LoginActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".ui.MainActivity"
             android:screenOrientation="portrait">
@@ -29,14 +34,13 @@
 
         <meta-data
             android:name="CLEVERTAP_ACCOUNT_ID"
-            android:value="TEST-449-68K-8Z6Z"/>
+            android:value="TEST-449-68K-8Z6Z" />
         <meta-data
             android:name="CLEVERTAP_TOKEN"
-            android:value="TEST-3b6-c44"/>
-        <!-- IMPORTANT: To force use Google AD ID to uniquely identify  users, use the following meta tag. GDPR mandates that if you are using this tag, there is prominent disclousure to your end customer in their application. Read more about GDPR here - https://clevertap.com/blog/in-preparation-of-gdpr-compliance/ -->
+            android:value="TEST-3b6-c44" /> <!-- IMPORTANT: To force use Google AD ID to uniquely identify  users, use the following meta tag. GDPR mandates that if you are using this tag, there is prominent disclousure to your end customer in their application. Read more about GDPR here - https://clevertap.com/blog/in-preparation-of-gdpr-compliance/ -->
         <meta-data
             android:name="CLEVERTAP_USE_GOOGLE_AD_ID"
-            android:value="1"/>
+            android:value="1" />
     </application>
 
 </manifest>
