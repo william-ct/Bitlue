@@ -18,6 +18,8 @@ import com.clevertap.android.sdk.CTFeatureFlagsListener
 import com.clevertap.android.sdk.CTInboxListener
 import com.clevertap.android.sdk.CTInboxStyleConfig
 import com.clevertap.android.sdk.CleverTapAPI
+import com.clevertap.android.sdk.displayunits.DisplayUnitListener
+import com.clevertap.android.sdk.displayunits.model.CleverTapDisplayUnit
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -30,7 +32,7 @@ import timber.log.Timber
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class BitcoinValueFragment : Fragment(R.layout.fragment_bitcoin_value), CTInboxListener,
-    CTFeatureFlagsListener {
+    CTFeatureFlagsListener,DisplayUnitListener {
 
     private val viewModel: MainViewModel by activityViewModels()
 
@@ -83,6 +85,8 @@ class BitcoinValueFragment : Fragment(R.layout.fragment_bitcoin_value), CTInboxL
             initializeInbox()
 
             setCTFeatureFlagsListener(this@BitcoinValueFragment)
+
+            setDisplayUnitListener(this@BitcoinValueFragment)
         }
     }
 
@@ -169,5 +173,9 @@ class BitcoinValueFragment : Fragment(R.layout.fragment_bitcoin_value), CTInboxL
 
     override fun featureFlagsUpdated() {
         Timber.wtf("featureFlagsUpdated() called")
+    }
+
+    override fun onDisplayUnitsLoaded(units: java.util.ArrayList<CleverTapDisplayUnit>?) {
+        Timber.wtf("onDisplayUnitsLoaded() called"+units?.size)
     }
 }
