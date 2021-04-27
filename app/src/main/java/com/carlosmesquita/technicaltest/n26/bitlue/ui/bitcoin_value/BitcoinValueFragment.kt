@@ -14,6 +14,7 @@ import com.carlosmesquita.technicaltest.n26.bitlue.ui.MainActivity
 import com.carlosmesquita.technicaltest.n26.bitlue.ui.MainViewModel
 import com.carlosmesquita.technicaltest.n26.bitlue.ui.actions.MainEvents.BitcoinValueEvents
 import com.carlosmesquita.technicaltest.n26.bitlue.ui.actions.MainStates.BitcoinValueStates
+import com.clevertap.android.sdk.CTFeatureFlagsListener
 import com.clevertap.android.sdk.CTInboxListener
 import com.clevertap.android.sdk.CTInboxStyleConfig
 import com.clevertap.android.sdk.CleverTapAPI
@@ -28,7 +29,8 @@ import timber.log.Timber
 @InternalCoroutinesApi
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
-class BitcoinValueFragment : Fragment(R.layout.fragment_bitcoin_value), CTInboxListener {
+class BitcoinValueFragment : Fragment(R.layout.fragment_bitcoin_value), CTInboxListener,
+    CTFeatureFlagsListener {
 
     private val viewModel: MainViewModel by activityViewModels()
 
@@ -59,7 +61,11 @@ class BitcoinValueFragment : Fragment(R.layout.fragment_bitcoin_value), CTInboxL
         }
 
         binding.themeToggle.setOnClickListener {
-            sendEvent(BitcoinValueEvents.OnThemeToggleClicked)
+            if ((activity as? MainActivity)?.clevertapDefaultInstance?.featureFlag()?.get("isDarkTheme", false) == true){
+                sendEvent(BitcoinValueEvents.OnForcedDarkThemeToggle)
+            }else {
+                sendEvent(BitcoinValueEvents.OnThemeToggleClicked)
+            }
         }
 
         binding.fab.setOnClickListener {
@@ -74,8 +80,9 @@ class BitcoinValueFragment : Fragment(R.layout.fragment_bitcoin_value), CTInboxL
     private fun initAppInbox(cleverTapInstance: CleverTapAPI?) {
         cleverTapInstance.apply {
           this!!.ctNotificationInboxListener = this@BitcoinValueFragment
-          //Initialize the inbox and wait for callbacks on overridden methods
-          initializeInbox()
+            initializeInbox()
+
+            setCTFeatureFlagsListener(this@BitcoinValueFragment)
         }
     }
 
@@ -157,6 +164,10 @@ class BitcoinValueFragment : Fragment(R.layout.fragment_bitcoin_value), CTInboxL
     }
 
     override fun inboxMessagesDidUpdate() {
-        Timber.i("inboxMessagesDidUpdate() called")
+        Timber.wtf("inboxMessagesDidUpdate() called")
+    }
+
+    override fun featureFlagsUpdated() {
+        Timber.wtf("featureFlagsUpdated() called")
     }
 }

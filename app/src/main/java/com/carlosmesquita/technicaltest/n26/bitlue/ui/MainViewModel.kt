@@ -104,6 +104,12 @@ class MainViewModel @Inject constructor(
                 }
             }
 
+            BitcoinValueEvents.OnForcedDarkThemeToggle -> {
+                if (AppCompatDelegate.getDefaultNightMode() != AppCompatDelegate.MODE_NIGHT_YES) {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                }
+            }
+
             else -> {
                 if (BuildConfig.DEBUG) {
                     throw IllegalStateException(
