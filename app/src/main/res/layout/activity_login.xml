@@ -35,4 +35,20 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/requestLocation"
+        android:layout_width="48dp"
+        android:layout_height="0dp"
+        android:layout_margin="@dimen/x_large"
+        android:adjustViewBounds="true"
+        android:background="?selectableItemBackgroundBorderless"
+        android:padding="@dimen/large"
+        android:scaleType="fitCenter"
+        android:src="@drawable/baseline_location_on_black_24dp"
+        android:tint="?colorOnBackground"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
