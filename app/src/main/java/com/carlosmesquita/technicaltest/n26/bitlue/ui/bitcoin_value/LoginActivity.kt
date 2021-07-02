@@ -22,6 +22,7 @@ import com.clevertap.android.geofence.CTGeofenceAPI
 import com.clevertap.android.geofence.CTGeofenceSettings
 import com.clevertap.android.geofence.interfaces.CTGeofenceEventsListener
 import com.clevertap.android.sdk.CleverTapAPI
+import com.clevertap.android.sdk.SyncListener
 import com.clevertap.android.sdk.product_config.CTProductConfigListener
 import dagger.hilt.android.AndroidEntryPoint
 import org.json.JSONObject
@@ -32,7 +33,7 @@ import kotlin.collections.HashMap
 private const val PERMISSIONS_REQUEST_CODE = 34
 
 @AndroidEntryPoint
-class LoginActivity : AppCompatActivity(), CTProductConfigListener {
+class LoginActivity : AppCompatActivity(), CTProductConfigListener,SyncListener {
 
     private lateinit var binding: ActivityLoginBinding
     private lateinit var cleverTapAPI: CleverTapAPI
@@ -54,6 +55,7 @@ class LoginActivity : AppCompatActivity(), CTProductConfigListener {
                 !checkPermissions() -> requestPermissions()
                 else -> initCTGeofenceApi(cleverTapAPI)
             }
+
         }
     }
 
@@ -205,7 +207,7 @@ class LoginActivity : AppCompatActivity(), CTProductConfigListener {
     /**
      * Return the current state of the permissions needed.
      */
-    private fun checkPermissions(): Boolean {
+    private fun  checkPermissions(): Boolean {
         val fineLocationPermissionState = ContextCompat.checkSelfPermission(this,
             Manifest.permission.ACCESS_FINE_LOCATION
         )
@@ -234,10 +236,10 @@ class LoginActivity : AppCompatActivity(), CTProductConfigListener {
 
     private fun updateProfileData() {
         val profileUpdate = HashMap<String, Any>()
-        profileUpdate["Name"] = "William Jo" // String
-        profileUpdate["Identity"] = 61026032 // String or number
+        profileUpdate["Name"] = "william" // String
+        profileUpdate["Identity"] = 100000123 // String or number
         profileUpdate["Email"] = "william@clevertap.com" // Email address of the user
-        profileUpdate["Phone"] = "+14155551234" // Phone (with the country code, starting with +)
+        profileUpdate["Phone"] = "+141555512562" // Phone (with the country code, starting with +)
         profileUpdate["Gender"] = "M" // Can be either M or F
         profileUpdate["DOB"] = "10/7/90" // Date of Birth. Set the Date object to the appropriate value first
 // optional fields. controls whether the user will be sent email, push etc.
@@ -269,6 +271,14 @@ class LoginActivity : AppCompatActivity(), CTProductConfigListener {
     override fun onInit() {
         Timber.wtf("onInit() called")
         cleverTapAPI.productConfig().fetchAndActivate()
+    }
+
+    override fun profileDataUpdated(p0: JSONObject?) {
+        TODO("Not yet implemented")
+    }
+
+    override fun profileDidInitialize(p0: String?) {
+        TODO("Not yet implemented")
     }
 
 }

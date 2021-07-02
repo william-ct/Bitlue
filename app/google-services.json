@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "230375442023-p63tef7bonevdv5dlfb9gh95nu2eclvg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.carlosmesquita.technicaltest.n26.bitlue",
+            "certificate_hash": "1212e41372dbe9d77ea02a943bcb86741e2a42f4"
+          }
+        },
+        {
           "client_id": "230375442023-ro0b64d2l6ui6vvb1mg920t98id086et.apps.googleusercontent.com",
           "client_type": 3
         }

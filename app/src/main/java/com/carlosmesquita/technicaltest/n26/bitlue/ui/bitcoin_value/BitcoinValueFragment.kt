@@ -68,6 +68,7 @@ class BitcoinValueFragment : Fragment(R.layout.fragment_bitcoin_value), CTInboxL
             }else {
                 sendEvent(BitcoinValueEvents.OnThemeToggleClicked)
             }
+//            (activity as? MainActivity)?.clevertapDefaultInstance?.decrementValue("double_score1",10.25)
         }
 
         binding.fab.setOnClickListener {
@@ -76,6 +77,7 @@ class BitcoinValueFragment : Fragment(R.layout.fragment_bitcoin_value), CTInboxL
 
         binding.appInbox.setOnClickListener {
             initAppInbox((activity as? MainActivity)?.clevertapDefaultInstance)
+//            (activity as? MainActivity)?.clevertapDefaultInstance?.incrementValue("double_score1",10.25)
         }
     }
 
